@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import EditItem from './service/items/EditItem';
 import { deleteItems } from './service/items/DeleteItem';
 import AddItem from './service/items/AddItem';
+import { useLocation } from 'react-router-dom';
 
 
 interface Item {
@@ -19,11 +20,11 @@ interface Item {
 }
 // Outside the component
 export const loadData = async (
-  setItemData: React.Dispatch<React.SetStateAction<Item[]>>
+    setItemData: React.Dispatch<React.SetStateAction<Item[]>>
 ) => {
-  const itemDetails = await getItems();
-  console.log(itemDetails);
-  setItemData(itemDetails);
+    const itemDetails = await getItems();
+    console.log(itemDetails);
+    setItemData(itemDetails);
 };
 
 export function ItemConsole() {
@@ -40,8 +41,8 @@ export function ItemConsole() {
 
     }, [])
     const refreshTableData = () => {
-    loadData(setItemData);
-  };
+        loadData(setItemData);
+    };
 
     const tHeads: string[] = [
         "Item ID",
@@ -80,11 +81,20 @@ export function ItemConsole() {
     const handleAdd = (newItem: Item) => (
         setItemData((prevData) => [...prevData, newItem])
     )
+    const location = useLocation();
+    const routeName = location.pathname.split("/").filter(Boolean).pop() || "Home"
+    const formattedTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1, -1) + " Console"
     return (
         <>
-            <div className='d-flex justify-content-end p-3'>
-                <Button variant="outline-success" onClick={() => setShowAddItemForm(true)} >Add Item</Button>
+            <div className="d-flex justify-content-between align-items-center p-3">
+                <h1>{formattedTitle}</h1>
+                <Button variant="outline-success" style={{marginRight:"15px"}} onClick={() => setShowAddItemForm(true)}>
+                    Add Item
+                </Button>
             </div>
+
+
+
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -126,7 +136,7 @@ export function ItemConsole() {
                 handleAdd={handleAdd}
                 refreshTable={refreshTableData}
             />
-            
+
 
         </>
     )

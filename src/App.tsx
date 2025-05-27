@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
         <div style={{ marginLeft: '220px', width: '100%' }}>
           <NavB />
-          <h1>Lost And Found App</h1>
+          
           <div className="p-4">
             <Routes>
               <Route path="/" element={<Navigate to="/items" />} />

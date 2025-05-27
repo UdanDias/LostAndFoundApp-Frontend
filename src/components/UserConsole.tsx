@@ -4,6 +4,7 @@ import { getUsers } from "./service/user/GetUser"
 import EditUser from "./service/user/EditUser";
 import { deleteUsers } from "./service/user/DeleteUser"
 import AddUser from "./service/user/AddUser";
+import { useLocation } from "react-router-dom";
 
 // interface User{
 //     userId:string;
@@ -149,10 +150,16 @@ export function UserConsole() {
     const handleAdd = (newUser: User) => (
         setUserData((prevData) => [...prevData, newUser])
     )
+    const location = useLocation();
+    const routeName = location.pathname.split("/").filter(Boolean).pop() || "Home"
+    const formattedTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1, -1) + " Console"
     return (
         <>
-            <div className='d-flex justify-content-end p-3' >
-                <Button style={{ marginRight: '60px' }} variant="outline-success" onClick={() => setShowAddUserForm(true)} >Add User</Button>
+            <div className="d-flex justify-content-between align-items-center p-3">
+                <h1>{formattedTitle}</h1>
+                <Button variant="outline-success" style={{marginRight:"45px"}} onClick={() => setShowAddUserForm(true)}>
+                    Add User
+                </Button>
             </div>
             <Table striped bordered hover>
                 <thead>
