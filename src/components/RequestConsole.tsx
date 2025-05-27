@@ -1,0 +1,177 @@
+import Table from 'react-bootstrap/Table';
+import { getItems } from './service/items/GetItems';
+import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import EditItem from './service/items/EditItem';
+import EditRequest from './service/request/EditRequest';
+import { getRequest } from './service/request/GetRequests';
+import { deleteRequests } from './service/request/DeleteRequest';
+import AddRequest from './service/request/AddRequest';
+
+interface Request {
+    requestId: string;
+    itemId: string;
+    userId: string;
+    requestStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | "";
+    isActiveRequest?: string;
+    requestedDate?: string;
+    requestedTime?: string;
+    reward: string;
+}
+export const loadData = async (
+    setRequestData: React.Dispatch<React.SetStateAction<Request[]>>
+) => {
+    const requestDetails = await getRequest();
+    console.log(requestDetails);
+    setRequestData(requestDetails);
+};
+export function RequestConsole() {
+
+    const [requestData, setRequestData] = useState<Request[]>([])
+    const [selectedRow, setSelectedRow] = useState<Request | null>(null)
+    const [showEditRequestModal, setShowEditRequestModal] = useState(false)
+    const [showAddRequestForm, setShowAddRequestForm] = useState(false)
+    useEffect(() => {
+
+        loadData(setRequestData)
+
+
+    }, [])
+    const refreshTableData = () => {
+        loadData(setRequestData);
+    };
+
+    // const tHeads: string[] = [
+    //     "Request Id",
+    //     "itemId",
+    //     "userId",
+    //     "requestStatus",
+    //     "isActiveRequest",
+    //     "requestedDate",
+    //     "requestedTime",
+    //     "reward"
+    // ];
+    const tHeads: { label: string; key: keyof Request }[] = [
+        { label: "Request Id", key: "requestId" },
+        { label: "Item Id", key: "itemId" },
+        { label: "User Id", key: "userId" },
+        { label: "Request Status", key: "requestStatus" },
+        { label: "Is Active Request", key: "isActiveRequest" },
+        { label: "Requested Date", key: "requestedDate" },
+        { label: "Requested Time", key: "requestedTime" },
+        { label: "Reward", key: "reward" },
+    ];
+
+    const handleEdit = (row: Request) => {
+        console.log("handle Edit", row)
+        setSelectedRow(row)
+        setShowEditRequestModal(true)
+    }
+    const handleClose = () => setShowEditRequestModal(false)
+    const handleUpdate = (updatedRequest: Request) => {
+        const updatedRequests = requestData.map((request) =>
+            request.requestId === updatedRequest.requestId ? updatedRequest : request);
+        setRequestData(updatedRequests)
+    }
+
+    const handleDelete = async (requestId: string) => {
+        try {
+            await deleteRequests(requestId)
+            setRequestData(requestData.filter(request => request.requestId !== requestId))
+
+        } catch (error) {
+            console.error("Delete request failed with", error)
+
+        }
+
+    }
+    const handleAdd = (newRequest: Request) => (
+        setRequestData((prevData) => [...prevData, newRequest])
+    )
+    return (
+        <>
+            <div className='d-flex justify-content-end p-3'>
+                <Button variant="outline-success" onClick={() => setShowAddRequestForm(true)} >Add Request</Button>
+            </div>
+            <Table striped bordered hover>
+                {/* <thead>
+                    <tr>
+                        {tHeads.map((headings) => (
+                            <th>{headings}</th>
+                        ))}
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {requestData.map((row) => (
+                        <tr key={row.requestId}>
+                            {tHeads.map((head, index) => (
+                                <td key={index}>
+                                    {head === 'requestedDate'
+                                        ? String(row[head as keyof Request]) // will already be 'YYYY-MM-DD'
+                                        : head === 'requestedTime'
+                                            ? String(row[head as keyof Request])?.slice(0, 8) // 'HH:mm:ss'
+                                            : String(row[head as keyof Request] ?? '')
+                                    }
+                                </td>
+                            ))}
+
+
+                            <td className='d-flex gap-2'>
+                                <Button variant="outline-secondary" onClick={() => handleEdit(row)}>Edit</Button>
+                                <Button variant="outline-danger" onClick={() => handleDelete(row.requestId)}>Delete</Button>
+
+                            </td>
+
+
+                        </tr>
+                    ))}
+                </tbody> */}
+                <thead>
+                    <tr>
+                        {tHeads.map(({ label }) => (
+                            <th key={label} className="text-center">{label}</th>
+                        ))}
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {requestData.map((row) => (
+                        <tr key={row.requestId}>
+                            {tHeads.map(({ key }) => (
+                                <td key={key} className="text-center">
+                                    {key === 'requestedDate'
+                                        ? String(row[key]) // already "YYYY-MM-DD"
+                                        : key === 'requestedTime'
+                                            ? String(row[key])?.slice(0, 8) // "HH:mm:ss"
+                                            : String(row[key] ?? '')
+                                    }
+                                </td>
+                            ))}
+                            <td className='d-flex gap-2'>
+                                <Button variant="outline-secondary" onClick={() => handleEdit(row)}>Edit</Button>
+                                <Button variant="outline-danger" onClick={() => handleDelete(row.requestId)}>Delete</Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+
+            </Table>
+            <EditRequest
+                show={showEditRequestModal}
+                selectedRow={selectedRow}
+                handleClose={handleClose}
+                handleUpdate={handleUpdate}
+                refreshTable={refreshTableData}
+            />
+            <AddRequest
+                show={showAddRequestForm}
+                handleClose={() => setShowAddRequestForm(false)}
+                handleAdd={handleAdd}
+                refreshTable={refreshTableData}
+            />
+
+        </>
+    )
+}

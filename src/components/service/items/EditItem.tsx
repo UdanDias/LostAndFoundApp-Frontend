@@ -1,0 +1,171 @@
+import React, { useEffect, useState } from 'react';
+import { FloatingLabel, Form } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { updateItems } from './UpdateItem';
+
+interface Item {
+  itemId: string;
+  userId: string;
+  itemName: string;
+  description: string;
+  color: string;
+  locationFound: string;
+  itemStatus: 'LOST' | 'FOUND' | 'CLAIMED' | "";
+  lostDate: string;
+}
+
+interface ItemEditProps {
+  show: boolean;
+  selectedRow: Item | null;
+  handleClose: () => void;
+  handleUpdate: (updatedItem: Item) => void
+  refreshTable: () => void; 
+}
+
+function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }: ItemEditProps) {
+  const [itemDetails, setItemDetails] = useState<Item>({
+    itemId: "",
+    userId: "",
+    itemName: "",
+    description: "",
+    color: "",
+    locationFound: "",
+    itemStatus: "",
+    lostDate: ""
+  })
+  useEffect(() => {
+    if (selectedRow) {
+      setItemDetails({ ...selectedRow })
+    }
+  }, [selectedRow])
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setItemDetails({ ...itemDetails, [e.target.name]: e.target.value })
+  }
+  const handleSave = async () => {
+    try {
+      const updatedItem = await updateItems(itemDetails)
+      handleUpdate(updatedItem)
+      refreshTable()
+      handleClose()
+      setTimeout(() => {
+        alert("Updated Successfully");
+      }, 300);
+    } catch (err) {
+      console.error("failed to update item", err)
+    }
+
+  }
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Item</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="ItemId"
+            className="mb-3"
+          >
+            <Form.Control
+              readOnly
+              type="text"
+              name="itemId"
+              value={itemDetails.itemId}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="UserId"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="userId"
+              value={itemDetails.userId}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="ItemName"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="itemName"
+              value={itemDetails.itemName}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Description"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="description"
+              value={itemDetails.description}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Color"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="color"
+              value={itemDetails.color}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="LocationFound"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="locationFound"
+              value={itemDetails.locationFound}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="ItemStatus"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="itemStatus"
+              value={itemDetails.itemStatus}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="LostDate"
+            className="mb-3"
+          >
+            <Form.Control
+              type="date"
+              name="lostDate"
+              value={itemDetails.lostDate}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleSave}>
+          Update
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+export default EditItem;
