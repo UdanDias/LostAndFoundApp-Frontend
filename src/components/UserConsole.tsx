@@ -156,7 +156,39 @@ export function UserConsole() {
     return (
         <>
             <div className="d-flex justify-content-between align-items-center p-3">
-                <h1>{formattedTitle}</h1>
+                <h1
+                    style={{
+                        fontSize: "2.5rem",
+                        fontWeight: "600",
+                        color: "#2c3e50",
+                        letterSpacing: "1px",
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
+                    }}
+                >
+                    <span
+                        style={{
+                            color: "#7c60d1", // Lightened version of #2b1055
+                            fontWeight: "700",
+                            fontSize: "2.8rem",
+                            textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
+                        }}
+                    >
+                        User
+                    </span>
+                    &nbsp;
+                    <span
+                        style={{
+                            color: "#7e6df0", // Lightened version of #0f0c29
+                            fontWeight: "700",
+                            fontSize: "2.8rem",
+                            textShadow: "1px 1px 3px rgba(126, 109, 240, 0.5)",
+                        }}
+                    >
+                        Console
+                    </span>
+                    
+                </h1>
                 <Button variant="outline-success" style={{marginRight:"45px"}} onClick={() => setShowAddUserForm(true)}>
                     Add User
                 </Button>

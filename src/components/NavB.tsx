@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,11 +14,15 @@ function NavB() {
         variant="dark"
       >
         <Container>
-          
+
           <Nav className="me-auto">
-            <Nav.Link href="#items">items</Nav.Link>
-            <Nav.Link href="#requests">requests</Nav.Link>
-            <Nav.Link href="#users">users</Nav.Link>
+            <Nav.Link href="#about">About</Nav.Link>
+            <Nav.Item>
+              <Button variant="outline-light" href="#login">
+                Login
+              </Button>
+            </Nav.Item>
+
           </Nav>
         </Container>
       </Navbar>
