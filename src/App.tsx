@@ -1,21 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
 import NavB from './components/NavB';
-import {ItemConsole} from './components/ItemConsole';
-import {UserConsole} from './components/UserConsole';
+import Sidebar from './components/SideBar';
+
+import { ItemConsole } from './components/ItemConsole';
+import { UserConsole } from './components/UserConsole';
 import { RequestConsole } from './components/RequestConsole';
 
-function App() {
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import { NotFound } from './components/NotFound';
+
+const App: React.FC = () => {
   return (
-    <>
-    <NavB/>
-    
-    {/* <RequestConsole/> */}
-    {/* <ItemConsole/> */}
-    <UserConsole/>
-    </>
+    <Router>
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+
+        <div style={{ marginLeft: '220px', width: '100%' }}>
+          <NavB />
+          <h1>Lost And Found App</h1>
+          <div className="p-4">
+            <Routes>
+              <Route path="/" element={<Navigate to="/items" />} />
+              <Route path="/users" element={<UserConsole />} />
+              <Route path="/items" element={<ItemConsole />} />
+              <Route path="/requests" element={<RequestConsole />} />
+              <Route path="/*" element={<NotFound/>} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </Router> 
   );
-}
+};
 
 export default App;
