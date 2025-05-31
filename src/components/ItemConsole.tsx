@@ -86,15 +86,25 @@ export function ItemConsole() {
     const formattedTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1, -1) + " Console"
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center p-3">
+            <div
+                className="d-flex align-items-center p-3 position-relative" // Added position-relative
+                style={{ width: '100%' }} // Ensure full width container
+            >
+                {/* Title absolutely centered */}
                 <h1
                     style={{
+                        position: 'absolute',           // Changed: absolute positioning for centering
+                        left: '50%',                   // Changed: center horizontally
+                        transform: 'translateX(-50%)', // Changed: shift back by 50% width
                         fontSize: "2.5rem",
                         fontWeight: "600",
                         color: "#2c3e50",
                         letterSpacing: "1px",
                         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                         textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
+                        margin: 0,
+                        whiteSpace: 'nowrap',          // Prevent line wrap
+                        zIndex: 1                     // Layer behind button
                     }}
                 >
                     <span
@@ -118,17 +128,18 @@ export function ItemConsole() {
                     >
                         Console
                     </span>
-                    
                 </h1>
 
-
-
-
-
-                <Button variant="outline-success" style={{ marginRight: "15px" }} onClick={() => setShowAddItemForm(true)}>
+                {/* Button aligned right */}
+                <Button
+                    variant="outline-success"
+                    style={{ marginLeft: 'auto', marginRight: "15px", zIndex: 2 }} // Changed: margin-left:auto pushes button right, zIndex above title
+                    onClick={() => setShowAddItemForm(true)}
+                >
                     Add Item
                 </Button>
             </div>
+
 
 
 

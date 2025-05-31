@@ -94,15 +94,25 @@ export function RequestConsole() {
     const formattedTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1, -1) + " Console"
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center p-3">
+            <div
+                className="d-flex align-items-center p-3 position-relative" // Added position-relative here
+                style={{ width: '100%' }} // Ensure full width container
+            >
+                {/* Title absolutely centered */}
                 <h1
                     style={{
+                        position: 'absolute',            // Changed: absolute positioning for centering
+                        left: '50%',                    // Changed: center horizontally
+                        transform: 'translateX(-50%)', // Changed: shift back by 50% width
                         fontSize: "2.5rem",
                         fontWeight: "600",
                         color: "#2c3e50",
                         letterSpacing: "1px",
                         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                         textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
+                        margin: 0,
+                        whiteSpace: 'nowrap',           // Prevent line wrap for title
+                        zIndex: 1                      // Ensure title is below button in layering
                     }}
                 >
                     <span
@@ -126,12 +136,18 @@ export function RequestConsole() {
                     >
                         Console
                     </span>
-                    
                 </h1>
-                <Button variant="outline-success" style={{marginRight:"3px"}} onClick={() => setShowAddRequestForm(true)}>
+
+                {/* Button aligned right */}
+                <Button
+                    variant="outline-success"
+                    style={{ marginLeft: 'auto', marginRight: "3px", zIndex: 2 }} // Changed: margin-left:auto to push right & zIndex for layering
+                    onClick={() => setShowAddRequestForm(true)}
+                >
                     Add Request
                 </Button>
             </div>
+
             <Table striped bordered hover>
                 {/* <thead>
                     <tr>
@@ -171,8 +187,9 @@ export function RequestConsole() {
                         {tHeads.map(({ label }) => (
                             <th key={label} className="text-center">{label}</th>
                         ))}
-                        
+                        <th className="text-center">Action</th>
                     </tr>
+                    
                 </thead>
 
                 <tbody>

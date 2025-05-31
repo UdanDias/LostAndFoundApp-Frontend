@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from 'react-router-dom';
 
 function NavB() {
   return (
@@ -15,14 +16,25 @@ function NavB() {
       >
         <Container>
 
-          <Nav className="me-auto">
+          {/* <Nav className="me-auto">
             <Nav.Link href="#about">About</Nav.Link>
+            <Nav.Link href="#register">Register</Nav.Link>
             <Nav.Item>
               <Button variant="outline-light" href="#login">
                 Login
               </Button>
             </Nav.Item>
+            
 
+          </Nav> */}
+          <Nav className="me-auto">
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            <Nav.Link as={Link} to="/register">Register</Nav.Link>
+            <Nav.Item>
+              <Link to="/login" className="btn btn-outline-light">
+                Login
+              </Link>
+            </Nav.Item>
           </Nav>
         </Container>
       </Navbar>

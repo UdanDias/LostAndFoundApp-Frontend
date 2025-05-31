@@ -11,6 +11,8 @@ import { RequestConsole } from './components/RequestConsole';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { NotFound } from './components/NotFound';
+import { Register } from './components/auth/Register';
+import { Login } from './components/auth/Login';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +26,8 @@ const App: React.FC = () => {
           <div className="p-4">
             <Routes>
               <Route path="/" element={<Navigate to="/items" />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login/>} />
               <Route path="/users" element={<UserConsole />} />
               <Route path="/items" element={<ItemConsole />} />
               <Route path="/requests" element={<RequestConsole />} />

@@ -119,10 +119,13 @@ export function UserConsole() {
 
     const tHeads: string[] = [
         "User Id",
-        "Name",
+        "First Name",
+        "Last Name",
         "Email",
         "Phone Number",
-        "Role"
+        "Password",
+        "Role",
+        "Action"
     ];
     const handleEdit = (row: User) => {
         console.log("handle Edit", row)
@@ -155,44 +158,57 @@ export function UserConsole() {
     const formattedTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1, -1) + " Console"
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center p-3">
-                <h1
-                    style={{
-                        fontSize: "2.5rem",
-                        fontWeight: "600",
-                        color: "#2c3e50",
-                        letterSpacing: "1px",
-                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                        textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
-                    }}
-                >
-                    <span
-                        style={{
-                            color: "#7c60d1", // Lightened version of #2b1055
-                            fontWeight: "700",
-                            fontSize: "2.8rem",
-                            textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
-                        }}
-                    >
-                        User
-                    </span>
-                    &nbsp;
-                    <span
-                        style={{
-                            color: "#7e6df0", // Lightened version of #0f0c29
-                            fontWeight: "700",
-                            fontSize: "2.8rem",
-                            textShadow: "1px 1px 3px rgba(126, 109, 240, 0.5)",
-                        }}
-                    >
-                        Console
-                    </span>
-                    
-                </h1>
-                <Button variant="outline-success" style={{marginRight:"45px"}} onClick={() => setShowAddUserForm(true)}>
-                    Add User
-                </Button>
-            </div>
+            <div className="position-relative d-flex align-items-center p-3" style={{ width: '100%' }}>
+  {/* Title absolutely centered */}
+  <h1
+    style={{
+      position: 'absolute',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      fontSize: "2.5rem",
+      fontWeight: "600",
+      color: "#2c3e50",
+      letterSpacing: "1px",
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
+      margin: 0,
+      whiteSpace: 'nowrap', // prevents line breaks
+      zIndex: 1
+    }}
+  >
+    <span
+      style={{
+        color: "#7c60d1",
+        fontWeight: "700",
+        fontSize: "2.8rem",
+        textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
+      }}
+    >
+      User
+    </span>
+    &nbsp;
+    <span
+      style={{
+        color: "#7e6df0",
+        fontWeight: "700",
+        fontSize: "2.8rem",
+        textShadow: "1px 1px 3px rgba(126, 109, 240, 0.5)",
+      }}
+    >
+      Console
+    </span>
+  </h1>
+
+  {/* Button aligned right */}
+  <Button
+    variant="outline-success"
+    style={{ marginLeft: 'auto', marginRight: '17px', zIndex: 2 }}
+    onClick={() => setShowAddUserForm(true)}
+  >
+    Add User
+  </Button>
+</div>
+
             <Table striped bordered hover>
                 <thead>
                     <tr>
