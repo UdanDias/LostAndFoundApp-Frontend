@@ -1,5 +1,5 @@
 import axios from 'axios'
-const updateUserUrl="http://localhost:8081/lostandfound/api/v1/user"
+const updateUserUrl="http://localhost:8081/lostandfound/api/v1/user/updateuser"
 export const updateUser = async(user:any)=>{
     
     try{

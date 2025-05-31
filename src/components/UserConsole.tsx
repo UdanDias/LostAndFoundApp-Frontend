@@ -3,7 +3,7 @@ import { Button, Table } from "react-bootstrap";
 import { getUsers } from "./service/user/GetUser"
 import EditUser from "./service/user/EditUser";
 import { deleteUsers } from "./service/user/DeleteUser"
-import AddUser from "./service/user/AddUser";
+// import AddUser from "./service/user/AddUser";
 import { useLocation } from "react-router-dom";
 
 // interface User{
@@ -86,9 +86,11 @@ import { useLocation } from "react-router-dom";
 
 interface User {
     userId: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phoneNumber: string;
+    password:string;
     role: 'ADMIN' | 'STAFF' | 'USER' | "";
 }
 // Outside the component
@@ -173,7 +175,10 @@ export function UserConsole() {
       textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
       margin: 0,
       whiteSpace: 'nowrap', // prevents line breaks
-      zIndex: 1
+      zIndex: 1,
+      marginTop:"20px",
+      marginBottom:"15px"
+      
     }}
   >
     <span
@@ -200,16 +205,16 @@ export function UserConsole() {
   </h1>
 
   {/* Button aligned right */}
-  <Button
+  {/* <Button
     variant="outline-success"
     style={{ marginLeft: 'auto', marginRight: '17px', zIndex: 2 }}
     onClick={() => setShowAddUserForm(true)}
   >
     Add User
-  </Button>
+  </Button> */}
 </div>
 
-            <Table striped bordered hover>
+            <Table striped bordered hover style={{marginTop:"20px"}}>
                 <thead>
                     <tr>
                         {tHeads.map((headings) => (
@@ -247,12 +252,12 @@ export function UserConsole() {
                 handleUpdate={handleUpdate}
                 refreshTable={refreshTableData}
             />
-            <AddUser
+            {/* <AddUser
                 show={showAddUserForm}
                 handleClose={() => setShowAddUserForm(false)}
                 handleAdd={handleAdd}
                 refreshTable={refreshTableData}
-            />
+            /> */}
 
 
         </>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const deleteUserUrl="http://localhost:8081/lostandfound/api/v1/user"
+const deleteUserUrl="http://localhost:8081/lostandfound/api/v1/user/deleteuser"
 export const deleteUsers = async(userId:string)=>{
     
     try{

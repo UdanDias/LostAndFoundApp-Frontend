@@ -6,9 +6,11 @@ import { updateUser } from './UpdateUser';
 
 interface User {
   userId:string;
-  name:string;
+  firstName:string;
+  lastName:string;
   email:string;
   phoneNumber:string;
+  password:string
   role:'ADMIN'|'STAFF'|'USER'|"";
 }
 
@@ -23,9 +25,11 @@ interface UserEditProps {
 function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}: UserEditProps) {
   const [userDetails, setUserDetails] = useState<User>({
     userId: "",
-    name: "",
+    firstName: "",
+    lastName:"",
     email: "",
     phoneNumber: "",
+    password:"",
     role: ""
     
   })
@@ -73,13 +77,24 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}:
           </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
-            label="Name"
+            label="First Name"
             className="mb-3"
           >
             <Form.Control
               type="text"
-              name="name"
-              value={userDetails.name}
+              name="firstName"
+              value={userDetails.firstName}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Last Name"
+            className="mb-3"
+          >
+            <Form.Control
+              type="text"
+              name="lastName"
+              value={userDetails.lastName}
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
@@ -88,7 +103,7 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}:
             className="mb-3"
           >
             <Form.Control
-              type="text"
+              type="email"
               name="email"
               value={userDetails.email}
               onChange={handleOnChange} />
@@ -99,9 +114,20 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}:
             className="mb-3"
           >
             <Form.Control
-              type="text"
+              type="tel"
               name="phoneNumber"
               value={userDetails.phoneNumber}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Password"
+            className="mb-3"
+          >
+            <Form.Control
+              type="password"
+              name="password"
+              value={userDetails.password}
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
