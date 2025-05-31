@@ -1,10 +1,36 @@
 
+import { useState } from "react"
 import { Button, Form } from "react-bootstrap"
+import { LoginTask } from "../service/auth/RegisterLogin";
 
 
 export const Login = () => {
+    interface Login {
+        email: string,
+        password: string
+    }
+    const [user, setUser] = useState<Login>({
+        email: "",
+        password: ""
+    });
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUser({ ...user, [e.target.name]: e.target.value })
+    }
+    const handleOnSubmit = async(e: React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const token=await LoginTask(user)
+        console.log(token)
+        alert(" user logged in  successfully")
+        console.log(user);
+        setUser({
+            
+            email: "",
+            password: "",
+            
+        })
+    }
     return (
-        <><div style={{marginTop:"170px"}}>
+        <><div style={{ marginTop: "170px" }}>
 
             <h1
                 className="text-center fw-bold mb-4"
@@ -15,13 +41,13 @@ export const Login = () => {
 
 
 
-            <Form className="d-flex flex-column align-items-center mt-5">
+            <Form className="d-flex flex-column align-items-center mt-5" onSubmit={handleOnSubmit}>
                 <div className="w-25">
 
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter Email Address" />
+                        <Form.Control type="email" placeholder="Enter Email Address" name="email" value={user.email} onChange={handleOnChange}/>
 
                     </Form.Group>
 
@@ -29,7 +55,7 @@ export const Login = () => {
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Enter Password" />
+                        <Form.Control type="password" placeholder="Enter Password" name="password" value={user.password} onChange={handleOnChange}/>
 
                     </Form.Group>
 

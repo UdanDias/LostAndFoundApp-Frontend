@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react"
 import { Button, Form } from "react-bootstrap"
-import { RegisterTask } from "../service/auth/Register"
+import { RegisterTask } from "../service/auth/RegisterLogin"
 
 export const Register = () => {
     interface Register {
