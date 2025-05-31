@@ -1,5 +1,6 @@
 import { ReactElement, useState } from "react"
 import { Button, Form } from "react-bootstrap"
+import { RegisterTask } from "../service/auth/Register"
 
 export const Register = () => {
     interface Register {
@@ -22,8 +23,10 @@ export const Register = () => {
         
         setUser ({ ...user, [e.target.name]: e.target.value })
     }
-    const handleOnSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleOnSubmit = async(e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const token=await RegisterTask(user)
+        console.log(token)
         alert("registered user successfully")
         console.log(user);
         setUser({
