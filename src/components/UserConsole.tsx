@@ -5,6 +5,7 @@ import EditUser from "./service/user/EditUser";
 import { deleteUsers } from "./service/user/DeleteUser"
 // import AddUser from "./service/user/AddUser";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 // interface User{
 //     userId:string;
@@ -151,14 +152,59 @@ export function UserConsole() {
     }
 
     const handleDelete = async (userId: string) => {
-        try {
-            await deleteUsers(userId)
-            setUserData(userData.filter(user => user.userId !== userId))
+        const result = await Swal.fire({
+            title: 'Confirm Delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            allowOutsideClick: false,
+        })
+        if (result.isConfirmed) {
+            try {
+                await deleteUsers(userId)
+                const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                
+                      Toast.fire({
+                        icon: "success",
+                        title: "User Deleted Successfully"
+                      });
+                setUserData(userData.filter(user => user.userId !== userId))
 
-        } catch (error) {
-            console.error("Delete user failed with", error)
+            } catch (error) {
+                const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                
+                      Toast.fire({
+                        icon: "error",
+                        title: "Failed to Delete User"
+                      });
+                console.error("Delete user failed with", error)
 
+            }
         }
+
 
     }
     const handleAdd = (newUser: User) => (

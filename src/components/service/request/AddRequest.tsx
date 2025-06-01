@@ -3,6 +3,8 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { addRequests } from './AddRequests';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -26,12 +28,13 @@ interface AddRequestProps {
 
 
 function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestProps) {
+  const navigate = useNavigate();
 
-  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request, 'isActiveRequest' | 'requestedDate' | 'requestedTime'|'requestStatus'>>({
+  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request, 'isActiveRequest' | 'requestedDate' | 'requestedTime' | 'requestStatus'>>({
     requestId: "",
     itemId: "",
     userId: "",
-    
+
 
     reward: ""
   });
@@ -41,7 +44,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
         requestId: "",
         itemId: "",
         userId: "",
-        
+
 
 
 
@@ -57,16 +60,30 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
   }
   const handleOnSubmit = async () => {
     try {
-      const addRequestDetails = await addRequests(newRequestDetails)
+      const addRequestDetails = await addRequests(newRequestDetails,navigate)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: " Request Added Successfully"
+      });
       console.log('✅ Full request from backend:', addRequestDetails);
       handleAdd(addRequestDetails)
       console.log("new RequestDetails", newRequestDetails)
       console.log("add RequestDetails", addRequestDetails)
       refreshTable();
       handleClose()
-      setTimeout(() => {
-        alert("Added Successfully");
-      }, 300);
+      
     } catch (err) {
       console.error("failed to add request", err)
     }
@@ -85,7 +102,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
             className="mb-3"
           >
             <Form.Control
-              
+
               type="text"
               name="itemId"
               value={newRequestDetails.itemId}
@@ -97,7 +114,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
             className="mb-3"
           >
             <Form.Control
-              
+
               type="text"
               name="userId"
               value={newRequestDetails.userId}
@@ -116,7 +133,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
               value={newRequestDetails.requestStatus}
               onChange={handleOnChange} />
           </FloatingLabel> */}
-          
+
           <FloatingLabel
             controlId="floatingInput"
             label="Reward"

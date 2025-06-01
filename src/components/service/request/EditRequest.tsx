@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { updateRequest } from './UpdateRequest';
+import Swal from 'sweetalert2';
 
 interface Request {
   requestId: string;
@@ -40,7 +41,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
     }
   }, [selectedRow])
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     console.log(`Change detected: ${name} = ${value}`);
     setRequestDetails(prev => ({ ...prev, [name]: value }));
@@ -49,12 +50,26 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
     try {
       console.log('Saving request with data:', requestDetails);
       const updatedRequest = await updateRequest(requestDetails)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: " Request Updated Successfully"
+      });
       handleUpdate(updatedRequest)
       refreshTable()
       handleClose()
-      setTimeout(() => {
-        alert("Updated Successfully");
-      }, 300);
+      
     } catch (err) {
       console.error("failed to update request", err)
     }
@@ -158,7 +173,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
               <option value="" disabled>Is request active</option>
               <option value="true">true</option>
               <option value="false">false</option>
-              
+
             </Form.Select>
           </FloatingLabel>
           <FloatingLabel

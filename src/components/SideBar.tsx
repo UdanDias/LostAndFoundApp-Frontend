@@ -4,6 +4,7 @@ import { Button, Nav, NavDropdown } from 'react-bootstrap';
 import { House, Person, BoxArrowRight, Puzzle } from 'react-bootstrap-icons';
 import { NavLink, useNavigate } from 'react-router';
 import { useAuth } from './auth/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Sidebar = () => {
   // const { isAuthenticated } = useAuth();
@@ -13,8 +14,25 @@ const Sidebar = () => {
   // }
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const handleOnClick = () => {
-    logout();             // Clear auth context/session
+  const handleOnClick = async() => {
+    logout();
+    const Toast = await Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+
+    Toast.fire({
+      icon: "warning",
+      title: "You logged out"
+    });
+    // Clear auth context/session
     navigate("/login");   // Redirect to Login page
   };
   return (

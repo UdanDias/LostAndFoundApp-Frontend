@@ -51,7 +51,7 @@ export function ItemConsole() {
         "Item Name",
         "Description",
         "Color",
-        "Location Found",
+        "Last Known Location",
         "Item Status",
         "Lost Date",
         "Action"
@@ -62,7 +62,7 @@ export function ItemConsole() {
         setShowEditItemModal(true)
     }
     const handleClose = () => setShowEditItemModal(false)
-    const handleUpdate = async(updatedItem: Item) => {
+    const handleUpdate = async (updatedItem: Item) => {
         // await Swal.fire({
         //     title:"Success!",
         //     text:"Book details updated successfully",
@@ -82,16 +82,48 @@ export function ItemConsole() {
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, Delete it!",
+            confirmButtonText: "Delete",
             cancelButtonText: "Cancel",
             allowOutsideClick: false,
         })
         if (result.isConfirmed) {
             try {
                 await deleteItems(itemId)
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Item deleted successfully"
+                });
                 setItemData(itemData.filter(item => item.itemId !== itemId))
 
             } catch (error) {
+                const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                
+                      Toast.fire({
+                        icon: "error",
+                        title: "Item Failed to Delete"
+                      });
                 console.error("Delete item failed with", error)
 
             }

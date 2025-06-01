@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap"
 import { RegisterTask } from "../service/auth/RegisterLogin"
 import { useAuth } from "./AuthProvider"
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const Register = () => {
     interface Register {
@@ -13,7 +14,7 @@ export const Register = () => {
         password: string,
         role: 'ADMIN' | 'STAFF' | 'USER' | ''
     }
-    
+
     const [user, setUser] = useState<Register>({
         firstName: "",
         lastName: "",
@@ -22,17 +23,33 @@ export const Register = () => {
         password: "",
         role: ""
     })
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
-        
-        setUser ({ ...user, [e.target.name]: e.target.value })
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+
+        setUser({ ...user, [e.target.name]: e.target.value })
     }
-    const {login}=useAuth();
-    const navigate=useNavigate();
-    const handleOnSubmit = async(e: React.ChangeEvent<HTMLFormElement>) => {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const handleOnSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const token=await RegisterTask(user)
+        const token = await RegisterTask(user)
         console.log(token)
-        alert("registered user successfully")
+        const Toast =  Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: " Registered Successfully"
+        });
+
         console.log(user);
         login(token)
         setUser({
@@ -44,7 +61,7 @@ export const Register = () => {
             role: ""
         })
         navigate("/items")
-        
+
     }
     return (
         <>

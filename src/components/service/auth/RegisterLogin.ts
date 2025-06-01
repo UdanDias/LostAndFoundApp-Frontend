@@ -28,7 +28,7 @@ const LoginTask=async(login:any)=>{
             return loginResponse.data.token
         }catch(err){
             console.error(err)
-            throw err
+            return null;
         }
  
 }

@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { addItems } from './AddItems';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 
@@ -27,49 +28,80 @@ interface AddItemProps {
 
 
 function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
-  const [newItemDetails, setNewItemDetails] = useState<Omit<Item,'itemStatus'>>({
+  const [newItemDetails, setNewItemDetails] = useState<Omit<Item, 'itemStatus'>>({
     itemId: "",
     userId: "",
     itemName: "",
     description: "",
     color: "",
     locationFound: "",
-    
+
     lostDate: ""
   })
- useEffect(() => {
-  if (show) {
-    setNewItemDetails({
-      itemId: "",
-      userId: "",
-      itemName: "",
-      description: "",
-      color: "",
-      locationFound: "",
-      
-      lostDate: ""
-    });
-  }
-}, [show]);
+  useEffect(() => {
+    if (show) {
+      setNewItemDetails({
+        itemId: "",
+        userId: "",
+        itemName: "",
+        description: "",
+        color: "",
+        locationFound: "",
+
+        lostDate: ""
+      });
+    }
+  }, [show]);
 
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name,value}=e.target;
-    setNewItemDetails((prev)=>({...prev,[name]:value }))
+    const { name, value } = e.target;
+    setNewItemDetails((prev) => ({ ...prev, [name]: value }))
   }
   const handleOnSubmit = async () => {
     try {
-      const addItemDetails = await addItems(newItemDetails,navigate)
+      const addItemDetails = await addItems(newItemDetails, navigate)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: "Item Added Successfully"
+      });
+
       console.log('✅ Full item from backend:', addItemDetails);
       handleAdd(addItemDetails)
       refreshTable();
       handleClose()
-      setTimeout(() => {
-        alert("Added Successfully");
-      }, 300);
+
     } catch (err) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "error",
+        title: "Failed to Add Item"
+      });
       console.error("failed to add item", err)
     }
 
@@ -81,7 +113,7 @@ function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          
+
           <FloatingLabel
             controlId="floatingInput"
             label="UserId"

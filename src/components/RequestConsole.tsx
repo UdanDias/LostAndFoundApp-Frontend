@@ -8,6 +8,7 @@ import { getRequest } from './service/request/GetRequests';
 import { deleteRequests } from './service/request/DeleteRequest';
 import AddRequest from './service/request/AddRequest';
 import { useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface Request {
     requestId: string;
@@ -76,14 +77,59 @@ export function RequestConsole() {
     }
 
     const handleDelete = async (requestId: string) => {
-        try {
-            await deleteRequests(requestId)
-            setRequestData(requestData.filter(request => request.requestId !== requestId))
+        const result = await Swal.fire({
+            title: 'Confirm Delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            allowOutsideClick: false,
+        })
+        if (result.isConfirmed) {
+            try {
+                await deleteRequests(requestId)
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    }
+                                });
+                
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Request Deleted Successfully"
+                                });
+                setRequestData(requestData.filter(request => request.requestId !== requestId))
 
-        } catch (error) {
-            console.error("Delete request failed with", error)
+            } catch (error) {
+                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.onmouseenter = Swal.stopTimer;
+                                        toast.onmouseleave = Swal.resumeTimer;
+                                    }
+                                });
+                
+                                Toast.fire({
+                                    icon: "error",
+                                    title: "Request Failed to Delete"
+                                });
+                console.error("Delete request failed with", error)
 
+            }
         }
+
 
     }
     const handleAdd = (newRequest: Request) => (
@@ -189,7 +235,7 @@ export function RequestConsole() {
                         ))}
                         <th className="text-center">Action</th>
                     </tr>
-                    
+
                 </thead>
 
                 <tbody>

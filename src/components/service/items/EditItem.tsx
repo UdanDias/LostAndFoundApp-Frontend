@@ -22,11 +22,11 @@ interface ItemEditProps {
   selectedRow: Item | null;
   handleClose: () => void;
   handleUpdate: (updatedItem: Item) => void
-  refreshTable: () => void; 
+  refreshTable: () => void;
 }
 
-function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }: ItemEditProps) {
-  const navigate=useNavigate();
+function EditItem({ show, selectedRow, handleClose, handleUpdate, refreshTable }: ItemEditProps) {
+  const navigate = useNavigate();
   const [itemDetails, setItemDetails] = useState<Item>({
     itemId: "",
     userId: "",
@@ -43,23 +43,32 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }:
     }
   }, [selectedRow])
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setItemDetails({ ...itemDetails, [e.target.name]: e.target.value })
   }
   const handleSave = async () => {
     try {
-      const updatedItem = await updateItems(itemDetails,navigate)
-      await Swal.fire({
-            title:"Success!",
-            text:"Book details updated successfully",
-            icon:"success",
-            confirmButtonText:"OK"
+      const updatedItem = await updateItems(itemDetails, navigate)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
 
-        })
+      Toast.fire({
+        icon: "success",
+        title: "Item Updated Successfully"
+      });
       handleUpdate(updatedItem)
       refreshTable()
       handleClose()
-      
+
     } catch (err) {
       console.error("failed to update item", err)
     }
@@ -140,21 +149,21 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }:
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
-                      controlId="floatingSelect"
-                      label="Item Status"
-                      className="mb-3"
-                    >
-                      <Form.Select
-                        name="itemStatus"
-                        value={itemDetails.itemStatus}
-                        onChange={handleOnChange}
-                      >
-                        <option value="" disabled>Select item status</option>
-                        <option value="LOST">LOST</option>
-                        <option value="FOUND">FOUND</option>
-                        <option value="CLAIMED">CLAIMED</option>
-                      </Form.Select>
-                    </FloatingLabel>
+            controlId="floatingSelect"
+            label="Item Status"
+            className="mb-3"
+          >
+            <Form.Select
+              name="itemStatus"
+              value={itemDetails.itemStatus}
+              onChange={handleOnChange}
+            >
+              <option value="" disabled>Select item status</option>
+              <option value="LOST">LOST</option>
+              <option value="FOUND">FOUND</option>
+              <option value="CLAIMED">CLAIMED</option>
+            </Form.Select>
+          </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
             label="LostDate"

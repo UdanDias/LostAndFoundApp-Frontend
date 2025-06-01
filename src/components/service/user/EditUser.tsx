@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { updateUser } from './UpdateUser';
+import Swal from 'sweetalert2';
 
 interface User {
   userId: string;
@@ -39,18 +40,32 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }
     }
   }, [selectedRow])
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
   }
   const handleSave = async () => {
     try {
       const updatedUser = await updateUser(userDetails)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: "User Updated Successfully"
+      });
       handleUpdate(updatedUser)
       refreshTable()
       handleClose()
-      setTimeout(() => {
-        alert("Updated Successfully");
-      }, 300);
+      
     } catch (err) {
       console.error("failed to update user", err)
     }
