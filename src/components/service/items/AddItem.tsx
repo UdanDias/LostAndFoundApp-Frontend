@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { addItems } from './AddItems';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -26,6 +27,7 @@ interface AddItemProps {
 
 
 function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
+  const navigate=useNavigate();
 
   const [newItemDetails, setNewItemDetails] = useState<Item>({
     itemId: "",
@@ -59,7 +61,7 @@ function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
   }
   const handleOnSubmit = async () => {
     try {
-      const addItemDetails = await addItems(newItemDetails)
+      const addItemDetails = await addItems(newItemDetails,navigate)
       console.log('✅ Full item from backend:', addItemDetails);
       handleAdd(addItemDetails)
       refreshTable();

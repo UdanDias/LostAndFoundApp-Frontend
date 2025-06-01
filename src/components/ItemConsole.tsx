@@ -6,6 +6,7 @@ import EditItem from './service/items/EditItem';
 import { deleteItems } from './service/items/DeleteItem';
 import AddItem from './service/items/AddItem';
 import { useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 interface Item {
@@ -61,21 +62,41 @@ export function ItemConsole() {
         setShowEditItemModal(true)
     }
     const handleClose = () => setShowEditItemModal(false)
-    const handleUpdate = (updatedItem: Item) => {
+    const handleUpdate = async(updatedItem: Item) => {
+        await Swal.fire({
+            title:"Success!",
+            text:"Book details updated successfully",
+            icon:"success",
+            confirmButtonText:"OK"
+
+        })
         const updatedItems = itemData.map((item) =>
             item.itemId === updatedItem.itemId ? updatedItem : item);
         setItemData(updatedItems)
     }
 
     const handleDelete = async (itemId: string) => {
-        try {
-            await deleteItems(itemId)
-            setItemData(itemData.filter(item => item.itemId !== itemId))
+        const result = await Swal.fire({
+            title: 'Confirm Delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Delete it!",
+            cancelButtonText: "Cancel",
+            allowOutsideClick: false,
+        })
+        if (result.isConfirmed) {
+            try {
+                await deleteItems(itemId)
+                setItemData(itemData.filter(item => item.itemId !== itemId))
 
-        } catch (error) {
-            console.error("Delete item failed with", error)
+            } catch (error) {
+                console.error("Delete item failed with", error)
 
+            }
         }
+
 
     }
     const handleAdd = (newItem: Item) => (

@@ -14,6 +14,7 @@ import { NotFound } from './components/NotFound';
 import { Register } from './components/auth/Register';
 import { Login } from './components/auth/Login';
 import { AuthProvider } from './components/auth/AuthProvider';
+import { UnAuth } from './components/UnAuth';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/unauth" element={<UnAuth/>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/users" element={<UserConsole />} />
                 <Route path="/items" element={<ItemConsole />} />

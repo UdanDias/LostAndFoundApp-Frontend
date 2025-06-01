@@ -3,6 +3,7 @@ import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { updateItems } from './UpdateItem';
+import { useNavigate } from 'react-router-dom';
 
 interface Item {
   itemId: string;
@@ -24,6 +25,7 @@ interface ItemEditProps {
 }
 
 function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }: ItemEditProps) {
+  const navigate=useNavigate();
   const [itemDetails, setItemDetails] = useState<Item>({
     itemId: "",
     userId: "",
@@ -45,12 +47,12 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }:
   }
   const handleSave = async () => {
     try {
-      const updatedItem = await updateItems(itemDetails)
+      const updatedItem = await updateItems(itemDetails,navigate)
       handleUpdate(updatedItem)
       refreshTable()
       handleClose()
       setTimeout(() => {
-        alert("Updated Successfully");
+        
       }, 300);
     } catch (err) {
       console.error("failed to update item", err)
