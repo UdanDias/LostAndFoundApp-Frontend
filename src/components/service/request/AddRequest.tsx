@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {addRequests} from './AddRequests';
+import { addRequests } from './AddRequests';
 
 
 
 interface Request {
-        requestId: string;
-        itemId: string;
-        userId: string;
-        requestStatus: 'PENDING'|'APPROVED'|'REJECTED'|"";
-        isActiveRequest?: string;
-        requestedDate?: string;
-        requestedTime?: string;
-        reward: string;
-    }
+  requestId: string;
+  itemId: string;
+  userId: string;
+  requestStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | "";
+  isActiveRequest?: string;
+  requestedDate?: string;
+  requestedTime?: string;
+  reward: string;
+}
 interface AddRequestProps {
   show: boolean;
   handleClose: () => void;
@@ -27,41 +27,41 @@ interface AddRequestProps {
 
 function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestProps) {
 
-  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request,  'isActiveRequest'|'requestedDate' | 'requestedTime'>>({
-  requestId:""  ,
-  itemId: "",
-  userId: "",
-  requestStatus: "",
-  
-  reward: ""
-});
- useEffect(() => {
-  if (show) {
-    setNewRequestDetails({
-        requestId:"",
+  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request, 'isActiveRequest' | 'requestedDate' | 'requestedTime'|'requestStatus'>>({
+    requestId: "",
+    itemId: "",
+    userId: "",
+    
+
+    reward: ""
+  });
+  useEffect(() => {
+    if (show) {
+      setNewRequestDetails({
+        requestId: "",
         itemId: "",
         userId: "",
-        requestStatus: "",
         
-        
-        
+
+
+
         reward: ""
-    });
-  }
-}, [show]);
+      });
+    }
+  }, [show]);
 
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name,value}=e.target;
-    setNewRequestDetails((prev)=>({...prev,[name]:value }))
+    const { name, value } = e.target;
+    setNewRequestDetails((prev) => ({ ...prev, [name]: value }))
   }
   const handleOnSubmit = async () => {
     try {
       const addRequestDetails = await addRequests(newRequestDetails)
       console.log('✅ Full request from backend:', addRequestDetails);
       handleAdd(addRequestDetails)
-      console.log("new RequestDetails",newRequestDetails)
-      console.log("add RequestDetails",addRequestDetails)
+      console.log("new RequestDetails", newRequestDetails)
+      console.log("add RequestDetails", addRequestDetails)
       refreshTable();
       handleClose()
       setTimeout(() => {
@@ -85,6 +85,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
             className="mb-3"
           >
             <Form.Control
+              
               type="text"
               name="itemId"
               value={newRequestDetails.itemId}
@@ -96,55 +97,26 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
             className="mb-3"
           >
             <Form.Control
+              
               type="text"
               name="userId"
               value={newRequestDetails.userId}
               onChange={handleOnChange} />
           </FloatingLabel>
-          <FloatingLabel
+          {/* <FloatingLabel
+
             controlId="floatingInput"
             label="RequestStatus"
             className="mb-3"
           >
             <Form.Control
+              readOnly
               type="text"
               name="requestStatus"
               value={newRequestDetails.requestStatus}
               onChange={handleOnChange} />
-          </FloatingLabel>
-          {/* <FloatingLabel
-            controlId="floatingInput"
-            label="IsActiveRequest"
-            className="mb-3"
-          >
-            <Form.Control
-              type="text"
-              name="isActiveRequest"
-              value={newRequestDetails.isActiveRequest}
-              onChange={handleOnChange} />
           </FloatingLabel> */}
-          {/* <FloatingLabel
-            controlId="floatingInput"
-            label="RequestedDate"
-            className="mb-3"
-          >
-            <Form.Control
-              type="date"
-              name="requestedDate"
-              value={newRequestDetails.requestedDate}
-              onChange={handleOnChange} />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="RequestedTime"
-            className="mb-3"
-          >
-            <Form.Control
-              type="time"
-              name="requestedTime"
-              value={newRequestDetails.requestedTime}
-              onChange={handleOnChange} />
-          </FloatingLabel> */}
+          
           <FloatingLabel
             controlId="floatingInput"
             label="Reward"
@@ -156,7 +128,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
               value={newRequestDetails.reward}
               onChange={handleOnChange} />
           </FloatingLabel>
-          
+
         </Form>
       </Modal.Body>
       <Modal.Footer>
@@ -166,7 +138,7 @@ function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestPr
         <Button variant="primary" onClick={handleOnSubmit}>
           Add Request
         </Button>
-        
+
       </Modal.Footer>
     </Modal>
   );

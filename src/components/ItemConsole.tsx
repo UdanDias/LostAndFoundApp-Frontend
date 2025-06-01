@@ -63,13 +63,13 @@ export function ItemConsole() {
     }
     const handleClose = () => setShowEditItemModal(false)
     const handleUpdate = async(updatedItem: Item) => {
-        await Swal.fire({
-            title:"Success!",
-            text:"Book details updated successfully",
-            icon:"success",
-            confirmButtonText:"OK"
+        // await Swal.fire({
+        //     title:"Success!",
+        //     text:"Book details updated successfully",
+        //     icon:"success",
+        //     confirmButtonText:"OK"
 
-        })
+        // })
         const updatedItems = itemData.map((item) =>
             item.itemId === updatedItem.itemId ? updatedItem : item);
         setItemData(updatedItems)

@@ -40,26 +40,26 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
     }
   }, [selectedRow])
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
     const { name, value } = e.target;
     console.log(`Change detected: ${name} = ${value}`);
     setRequestDetails(prev => ({ ...prev, [name]: value }));
   }
-    const handleSave = async () => {
-      try {
-        console.log('Saving request with data:', requestDetails);
-        const updatedRequest= await updateRequest(requestDetails)
-        handleUpdate(updatedRequest)
-        refreshTable()
-        handleClose()
-        setTimeout(() => {
-          alert("Updated Successfully");
-        }, 300);
-      } catch (err) {
-        console.error("failed to update request", err)
-      }
-
+  const handleSave = async () => {
+    try {
+      console.log('Saving request with data:', requestDetails);
+      const updatedRequest = await updateRequest(requestDetails)
+      handleUpdate(updatedRequest)
+      refreshTable()
+      handleClose()
+      setTimeout(() => {
+        alert("Updated Successfully");
+      }, 300);
+    } catch (err) {
+      console.error("failed to update request", err)
     }
+
+  }
   // const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const { name, value } = e.target;
   //   console.log(`Change detected: ${name} = ${value}`);
@@ -111,7 +111,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
             className="mb-3"
           >
             <Form.Control
-            readOnly
+              readOnly
               type="text"
               name="itemId"
               value={requestDetails.itemId}
@@ -123,33 +123,43 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
             className="mb-3"
           >
             <Form.Control
-            readOnly
+              readOnly
               type="text"
               name="userId"
               value={requestDetails.userId}
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
-            controlId="floatingInput"
-            label="RequestStatus"
+            controlId="floatingSelect"
+            label="Request Status"
             className="mb-3"
           >
-            <Form.Control
-              type="text"
+            <Form.Select
               name="requestStatus"
               value={requestDetails.requestStatus}
-              onChange={handleOnChange} />
+              onChange={handleOnChange}
+            >
+              <option value="" disabled>Select request status</option>
+              <option value="PENDING">PENDING</option>
+              <option value="APPROVED">APPROVED</option>
+              <option value="REJECTED">REJECTED</option>
+            </Form.Select>
           </FloatingLabel>
           <FloatingLabel
-            controlId="floatingInput"
-            label="IsActiveRequest"
+            controlId="floatingSelect"
+            label="Is Request Active "
             className="mb-3"
           >
-            <Form.Control
-              type="text"
+            <Form.Select
               name="isActiveRequest"
               value={requestDetails.isActiveRequest}
-              onChange={handleOnChange} />
+              onChange={handleOnChange}
+            >
+              <option value="" disabled>Is request active</option>
+              <option value="true">true</option>
+              <option value="false">false</option>
+              
+            </Form.Select>
           </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
@@ -157,7 +167,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
             className="mb-3"
           >
             <Form.Control
-            readOnly
+              readOnly
               type="string"
               name="requestedDate"
               value={requestDetails.requestedDate}
@@ -169,7 +179,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
             className="mb-3"
           >
             <Form.Control
-            readOnly
+              readOnly
               type="string"
               name="requestedTime"
               value={requestDetails.requestedTime}

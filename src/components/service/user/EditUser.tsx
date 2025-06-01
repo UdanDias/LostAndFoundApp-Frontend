@@ -5,13 +5,13 @@ import Modal from 'react-bootstrap/Modal';
 import { updateUser } from './UpdateUser';
 
 interface User {
-  userId:string;
-  firstName:string;
-  lastName:string;
-  email:string;
-  phoneNumber:string;
-  password:string
-  role:'ADMIN'|'STAFF'|'USER'|"";
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string
+  role: 'ADMIN' | 'STAFF' | 'USER' | "";
 }
 
 interface UserEditProps {
@@ -22,16 +22,16 @@ interface UserEditProps {
   refreshTable: () => void;
 }
 
-function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}: UserEditProps) {
+function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }: UserEditProps) {
   const [userDetails, setUserDetails] = useState<User>({
     userId: "",
     firstName: "",
-    lastName:"",
+    lastName: "",
     email: "",
     phoneNumber: "",
-    password:"",
+    password: "",
     role: ""
-    
+
   })
   useEffect(() => {
     if (selectedRow) {
@@ -39,7 +39,7 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}:
     }
   }, [selectedRow])
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
   }
   const handleSave = async () => {
@@ -131,17 +131,23 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate ,refreshTable}:
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
-            controlId="floatingInput"
+            controlId="floatingSelect"
             label="Role"
             className="mb-3"
           >
-            <Form.Control
-              type="text"
+            <Form.Select
               name="role"
               value={userDetails.role}
-              onChange={handleOnChange} />
+              onChange={handleOnChange}
+            >
+              <option value="" disabled>Select a role</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="STAFF">STAFF</option>
+              <option value="USER">USER</option>
+            </Form.Select>
           </FloatingLabel>
-          
+
+
 
         </Form>
       </Modal.Body>

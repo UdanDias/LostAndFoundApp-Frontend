@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { updateItems } from './UpdateItem';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface Item {
   itemId: string;
@@ -42,18 +43,23 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }:
     }
   }, [selectedRow])
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
     setItemDetails({ ...itemDetails, [e.target.name]: e.target.value })
   }
   const handleSave = async () => {
     try {
       const updatedItem = await updateItems(itemDetails,navigate)
+      await Swal.fire({
+            title:"Success!",
+            text:"Book details updated successfully",
+            icon:"success",
+            confirmButtonText:"OK"
+
+        })
       handleUpdate(updatedItem)
       refreshTable()
       handleClose()
-      setTimeout(() => {
-        
-      }, 300);
+      
     } catch (err) {
       console.error("failed to update item", err)
     }
@@ -134,16 +140,21 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate,refreshTable }:
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
-            controlId="floatingInput"
-            label="ItemStatus"
-            className="mb-3"
-          >
-            <Form.Control
-              type="text"
-              name="itemStatus"
-              value={itemDetails.itemStatus}
-              onChange={handleOnChange} />
-          </FloatingLabel>
+                      controlId="floatingSelect"
+                      label="Item Status"
+                      className="mb-3"
+                    >
+                      <Form.Select
+                        name="itemStatus"
+                        value={itemDetails.itemStatus}
+                        onChange={handleOnChange}
+                      >
+                        <option value="" disabled>Select item status</option>
+                        <option value="LOST">LOST</option>
+                        <option value="FOUND">FOUND</option>
+                        <option value="CLAIMED">CLAIMED</option>
+                      </Form.Select>
+                    </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
             label="LostDate"

@@ -4,7 +4,7 @@ import { getUsers } from "./service/user/GetUser"
 import EditUser from "./service/user/EditUser";
 import { deleteUsers } from "./service/user/DeleteUser"
 // import AddUser from "./service/user/AddUser";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // interface User{
 //     userId:string;
@@ -90,14 +90,14 @@ interface User {
     lastName: string;
     email: string;
     phoneNumber: string;
-    password:string;
+    password: string;
     role: 'ADMIN' | 'STAFF' | 'USER' | "";
 }
 // Outside the component
-export const loadData = async (
+export const loadData = async (navigate: any,
     setUserData: React.Dispatch<React.SetStateAction<User[]>>
 ) => {
-    const userDetails = await getUsers();
+    const userDetails = await getUsers(navigate);
     console.log(userDetails);
     setUserData(userDetails);
 };
@@ -108,15 +108,23 @@ export function UserConsole() {
     const [selectedRow, setSelectedRow] = useState<User | null>(null)
     const [showEditUserModal, setShowEditUserModal] = useState(false)
     const [showAddUserForm, setShowAddUserForm] = useState(false)
+    const navigate = useNavigate();
 
+    // useEffect(() => {
+
+    //     loadData(navigate,setUserData)
+
+
+    // }, [navigate])
     useEffect(() => {
+        const fetchData = async () => {
+            await loadData(navigate, setUserData); // no try/catch needed
+        };
+        fetchData();
+    }, [navigate]);
 
-        loadData(setUserData)
-
-
-    }, [])
     const refreshTableData = () => {
-        loadData(setUserData);
+        loadData(navigate, setUserData);
     };
 
     const tHeads: string[] = [
@@ -135,6 +143,7 @@ export function UserConsole() {
         setShowEditUserModal(true)
     }
     const handleClose = () => setShowEditUserModal(false)
+
     const handleUpdate = (updatedUser: User) => {
         const updatedUsers = userData.map((user) =>
             user.userId === updatedUser.userId ? updatedUser : user);
@@ -161,66 +170,66 @@ export function UserConsole() {
     return (
         <>
             <div className="position-relative d-flex align-items-center p-3" style={{ width: '100%' }}>
-  {/* Title absolutely centered */}
-  <h1
-    style={{
-      position: 'absolute',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontSize: "2.5rem",
-      fontWeight: "600",
-      color: "#2c3e50",
-      letterSpacing: "1px",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
-      margin: 0,
-      whiteSpace: 'nowrap', // prevents line breaks
-      zIndex: 1,
-      marginTop:"20px",
-      marginBottom:"15px"
-      
-    }}
-  >
-    <span
-      style={{
-        color: "#7c60d1",
-        fontWeight: "700",
-        fontSize: "2.8rem",
-        textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
-      }}
-    >
-      User
-    </span>
-    &nbsp;
-    <span
-      style={{
-        color: "#7e6df0",
-        fontWeight: "700",
-        fontSize: "2.8rem",
-        textShadow: "1px 1px 3px rgba(126, 109, 240, 0.5)",
-      }}
-    >
-      Console
-    </span>
-  </h1>
+                {/* Title absolutely centered */}
+                <h1
+                    style={{
+                        position: 'absolute',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        fontSize: "2.5rem",
+                        fontWeight: "600",
+                        color: "#2c3e50",
+                        letterSpacing: "1px",
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        textShadow: "1px 1px 2px rgba(60, 60, 120, 0.2)",
+                        margin: 0,
+                        whiteSpace: 'nowrap', // prevents line breaks
+                        zIndex: 1,
+                        marginTop: "20px",
+                        marginBottom: "15px"
 
-  {/* Button aligned right */}
-  {/* <Button
+                    }}
+                >
+                    <span
+                        style={{
+                            color: "#7c60d1",
+                            fontWeight: "700",
+                            fontSize: "2.8rem",
+                            textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
+                        }}
+                    >
+                        User
+                    </span>
+                    &nbsp;
+                    <span
+                        style={{
+                            color: "#7e6df0",
+                            fontWeight: "700",
+                            fontSize: "2.8rem",
+                            textShadow: "1px 1px 3px rgba(126, 109, 240, 0.5)",
+                        }}
+                    >
+                        Console
+                    </span>
+                </h1>
+
+                {/* Button aligned right */}
+                {/* <Button
     variant="outline-success"
     style={{ marginLeft: 'auto', marginRight: '17px', zIndex: 2 }}
     onClick={() => setShowAddUserForm(true)}
   >
     Add User
   </Button> */}
-</div>
+            </div>
 
-            <Table striped bordered hover style={{marginTop:"20px"}}>
+            <Table striped bordered hover style={{ marginTop: "20px" }}>
                 <thead>
                     <tr>
                         {tHeads.map((headings) => (
                             <th className="text-center">{headings}</th>
                         ))}
-                        
+
 
                     </tr>
                 </thead>
