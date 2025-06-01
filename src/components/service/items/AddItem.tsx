@@ -29,14 +29,14 @@ interface AddItemProps {
 function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
   const navigate=useNavigate();
 
-  const [newItemDetails, setNewItemDetails] = useState<Item>({
+  const [newItemDetails, setNewItemDetails] = useState<Omit<Item,'itemStatus'>>({
     itemId: "",
     userId: "",
     itemName: "",
     description: "",
     color: "",
     locationFound: "",
-    itemStatus: "",
+    
     lostDate: ""
   })
  useEffect(() => {
@@ -48,7 +48,7 @@ function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
       description: "",
       color: "",
       locationFound: "",
-      itemStatus: "",
+      
       lostDate: ""
     });
   }
@@ -137,7 +137,7 @@ function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
               value={newItemDetails.locationFound}
               onChange={handleOnChange} />
           </FloatingLabel>
-          <FloatingLabel
+          {/* <FloatingLabel
             controlId="floatingInput"
             label="ItemStatus"
             className="mb-3"
@@ -147,7 +147,7 @@ function AddItem({ show, handleClose, handleAdd, refreshTable }: AddItemProps) {
               name="itemStatus"
               value={newItemDetails.itemStatus}
               onChange={handleOnChange} />
-          </FloatingLabel>
+          </FloatingLabel> */}
           <FloatingLabel
             controlId="floatingInput"
             label="LostDate"
