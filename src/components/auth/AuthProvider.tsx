@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { error } from "console";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface AuthContextType{
     isAuthenticated:boolean,
@@ -24,5 +25,13 @@ export const AuthProvider=({children}:{children:ReactNode})=>{
             {children}
         </AuthContext.Provider>
     );
+
+}
+export const useAuth=()=>{
+    const context=useContext(AuthContext)
+    if(!context){
+        throw new Error ("context should be  used within qan authProvider")
+    }
+    return context;
 
 }
