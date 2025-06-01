@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { fetchToken } from '../../auth/FetchToken';
-const deleteItemsUrl = "http://localhost:8081/lostandfound/api/v1/item"
+const deleteItemsUrl = "http://localhost:8081/lostandfound/api/v1/item/deleteitem"
 export const deleteItems = async (itemId: string) => {
 
     try {

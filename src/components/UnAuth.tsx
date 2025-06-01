@@ -5,7 +5,7 @@ export const UnAuth=()=>{
     useEffect(()=>{
         Swal.fire({
                     title:"Access denied!",
-                    text:"You have no permission to access this page",
+                    text:"You have no permission to access this feature",
                     icon:"warning",
                     // confirmButtonText:"OK"
                     allowOutsideClick:true

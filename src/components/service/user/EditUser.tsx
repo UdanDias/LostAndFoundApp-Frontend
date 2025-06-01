@@ -24,13 +24,13 @@ interface UserEditProps {
 }
 
 function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }: UserEditProps) {
-  const [userDetails, setUserDetails] = useState<User>({
+  const [userDetails, setUserDetails] = useState<Omit<User,'password'>>({
     userId: "",
     firstName: "",
     lastName: "",
     email: "",
     phoneNumber: "",
-    password: "",
+    
     role: ""
 
   })
@@ -134,7 +134,7 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }
               value={userDetails.phoneNumber}
               onChange={handleOnChange} />
           </FloatingLabel>
-          <FloatingLabel
+          {/* <FloatingLabel
             controlId="floatingInput"
             label="Password"
             className="mb-3"
@@ -144,7 +144,7 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }
               name="password"
               value={userDetails.password}
               onChange={handleOnChange} />
-          </FloatingLabel>
+          </FloatingLabel> */}
           <FloatingLabel
             controlId="floatingSelect"
             label="Role"

@@ -13,6 +13,8 @@ interface Request {
   isActiveRequest?: string;
   requestedDate?: string;
   requestedTime?: string;
+  updatedDate: string;
+  updatedTime: string;
   reward: string;
 }
 
@@ -33,6 +35,8 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
     isActiveRequest: "",
     requestedDate: "",
     requestedTime: "",
+    updatedDate: "",
+    updatedTime: "",
     reward: ""
   })
   useEffect(() => {
@@ -201,6 +205,7 @@ function EditRequest({ show, selectedRow, handleClose, handleUpdate, refreshTabl
               onChange={handleOnChange} />
           </FloatingLabel>
           <FloatingLabel
+          
             controlId="floatingInput"
             label="Reward"
             className="mb-3"

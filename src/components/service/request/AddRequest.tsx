@@ -16,6 +16,8 @@ interface Request {
   isActiveRequest?: string;
   requestedDate?: string;
   requestedTime?: string;
+  updatedDate: string;
+  updatedTime: string;
   reward: string;
 }
 interface AddRequestProps {
@@ -30,7 +32,7 @@ interface AddRequestProps {
 function AddRequest({ show, handleClose, handleAdd, refreshTable }: AddRequestProps) {
   const navigate = useNavigate();
 
-  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request, 'isActiveRequest' | 'requestedDate' | 'requestedTime' | 'requestStatus'>>({
+  const [newRequestDetails, setNewRequestDetails] = useState<Omit<Request, 'isActiveRequest' | 'requestedDate' | 'requestedTime' | 'requestStatus'|'updatedDate'|'updatedTime'>>({
     requestId: "",
     itemId: "",
     userId: "",

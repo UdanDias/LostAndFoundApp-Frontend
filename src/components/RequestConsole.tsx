@@ -18,6 +18,8 @@ interface Request {
     isActiveRequest?: string;
     requestedDate?: string;
     requestedTime?: string;
+    updatedDate: string;
+    updatedTime: string;
     reward: string;
 }
 export const loadData = async (
@@ -61,6 +63,8 @@ export function RequestConsole() {
         { label: "Is Active Request", key: "isActiveRequest" },
         { label: "Requested Date", key: "requestedDate" },
         { label: "Requested Time", key: "requestedTime" },
+        { label: "Updated Date", key: "updatedDate" },
+        { label: "Updated Time", key: "updatedTime" },
         { label: "Reward", key: "reward" },
     ];
 
@@ -91,40 +95,40 @@ export function RequestConsole() {
             try {
                 await deleteRequests(requestId)
                 const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: "top-end",
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                        toast.onmouseenter = Swal.stopTimer;
-                                        toast.onmouseleave = Swal.resumeTimer;
-                                    }
-                                });
-                
-                                Toast.fire({
-                                    icon: "success",
-                                    title: "Request Deleted Successfully"
-                                });
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Request Deleted Successfully"
+                });
                 setRequestData(requestData.filter(request => request.requestId !== requestId))
 
             } catch (error) {
                 const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: "top-end",
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                        toast.onmouseenter = Swal.stopTimer;
-                                        toast.onmouseleave = Swal.resumeTimer;
-                                    }
-                                });
-                
-                                Toast.fire({
-                                    icon: "error",
-                                    title: "Request Failed to Delete"
-                                });
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: "Request Failed to Delete"
+                });
                 console.error("Delete request failed with", error)
 
             }

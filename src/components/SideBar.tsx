@@ -2,19 +2,27 @@
 import React from 'react';
 import { Button, Nav, NavDropdown } from 'react-bootstrap';
 import { House, Person, BoxArrowRight, Puzzle } from 'react-bootstrap-icons';
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth/AuthProvider';
 import Swal from 'sweetalert2';
 
-const Sidebar = () => {
-  // const { isAuthenticated } = useAuth();
-  // const { logout } = useAuth();
-  // const handleOnClick = () => {
+// const Sidebar = () => {
+//   // const { isAuthenticated } = useAuth();
+//   // const { logout } = useAuth();
+//   // const handleOnClick = () => {
 
-  // }
-  const { isAuthenticated, logout } = useAuth();
+//   // }
+//   // const { isAuthenticated, logout } = useAuth();
+//   const { isAuthenticated, logout, role } = useAuth();
+const Sidebar = () => {
+  const { isAuthenticated, logout, role, authLoading } = useAuth();
   const navigate = useNavigate();
-  const handleOnClick = async() => {
+  if (authLoading) return null;
+
+
+
+
+  const handleOnClick = async () => {
     logout();
     const Toast = await Swal.mixin({
       toast: true,
@@ -56,7 +64,7 @@ const Sidebar = () => {
               <Nav.Link as={NavLink} to="/profile" style={linkStyle}>
                 <Person className="me-2" /> Profile
               </Nav.Link>
-              <NavDropdown
+              {/* <NavDropdown
                 title={
                   <span style={linkStyle}>
                     <Puzzle className="me-2" /> Components
@@ -74,7 +82,30 @@ const Sidebar = () => {
                 <NavDropdown.Item as={NavLink} to="/users" >
                   Users
                 </NavDropdown.Item>
+              </NavDropdown> */}
+              <NavDropdown
+                title={
+                  <span style={linkStyle}>
+                    <Puzzle className="me-2" /> Components
+                  </span>
+                }
+                id="nav-dropdown-components"
+                style={{ paddingLeft: "0.5rem", marginLeft: "-25px" }}
+              >
+                <NavDropdown.Item as={NavLink} to="/items">
+                  Items
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/requests">
+                  Requests
+                </NavDropdown.Item>
+                {role && role !== "USER" && (
+                  <NavDropdown.Item as={NavLink} to="/users">
+                    Users
+                  </NavDropdown.Item>
+                )}
+
               </NavDropdown>
+
 
 
               <Button

@@ -15,6 +15,7 @@ export const deleteUsers = async (userId: string) => {
         );
         return response.data;
     } catch (error) {
+        
         console.error("failed to delete the data", error)
         throw error
     }

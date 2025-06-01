@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import { updateItems } from './UpdateItem';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useAuth } from '../../auth/AuthProvider';// Adjust path if needed
+
 
 interface Item {
   itemId: string;
@@ -26,6 +28,8 @@ interface ItemEditProps {
 }
 
 function EditItem({ show, selectedRow, handleClose, handleUpdate, refreshTable }: ItemEditProps) {
+  
+
   const navigate = useNavigate();
   const [itemDetails, setItemDetails] = useState<Item>({
     itemId: "",
@@ -157,6 +161,7 @@ function EditItem({ show, selectedRow, handleClose, handleUpdate, refreshTable }
               name="itemStatus"
               value={itemDetails.itemStatus}
               onChange={handleOnChange}
+              
             >
               <option value="" disabled>Select item status</option>
               <option value="LOST">LOST</option>
