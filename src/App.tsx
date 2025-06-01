@@ -13,30 +13,34 @@ import './App.css';
 import { NotFound } from './components/NotFound';
 import { Register } from './components/auth/Register';
 import { Login } from './components/auth/Login';
+import { AuthProvider } from './components/auth/AuthProvider';
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div style={{ display: 'flex' }}>
-        <Sidebar />
+      <AuthProvider>
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
 
-        <div style={{ marginLeft: '220px', width: '100%' }}>
-          <NavB />
-          
-          <div className="p-4">
-            <Routes>
-              <Route path="/" element={<Navigate to="/items" />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login/>} />
-              <Route path="/users" element={<UserConsole />} />
-              <Route path="/items" element={<ItemConsole />} />
-              <Route path="/requests" element={<RequestConsole />} />
-              <Route path="/*" element={<NotFound/>} />
-            </Routes>
+          <div style={{ marginLeft: '220px', width: '100%' }}>
+            <NavB />
+
+            <div className="p-4">
+              <Routes>
+                <Route path="/" element={<Navigate to="/items" />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/users" element={<UserConsole />} />
+                <Route path="/items" element={<ItemConsole />} />
+                <Route path="/requests" element={<RequestConsole />} />
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
+            </div>
           </div>
         </div>
-      </div>
-    </Router> 
+      </AuthProvider>
+    </Router>
+
   );
 };
 

@@ -11,6 +11,9 @@ export const AuthProvider=({children}:{children:ReactNode})=>{
     const [isAuthenticated,setIsAuthenticated]=useState(false);
     useEffect(()=>{
         const token=localStorage.getItem("LFToken")
+        if(token){
+            setIsAuthenticated(!!token)
+        }
     },[])
     const login=(token:string)=>{
         localStorage.setItem("LFToken",token)

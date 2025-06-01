@@ -1,6 +1,7 @@
 import { ReactElement, useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { RegisterTask } from "../service/auth/RegisterLogin"
+import { useAuth } from "./AuthProvider"
 
 export const Register = () => {
     interface Register {
@@ -11,6 +12,7 @@ export const Register = () => {
         password: string,
         role: 'ADMIN' | 'STAFF' | 'USER' | ''
     }
+    const {login}=useAuth();
     const [user, setUser] = useState<Register>({
         firstName: "",
         lastName: "",
@@ -29,6 +31,7 @@ export const Register = () => {
         console.log(token)
         alert("registered user successfully")
         console.log(user);
+        login(token)
         setUser({
             firstName: "",
             lastName: "",
@@ -37,6 +40,7 @@ export const Register = () => {
             password: "",
             role: ""
         })
+        
     }
     return (
         <>
