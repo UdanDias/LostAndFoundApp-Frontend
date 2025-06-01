@@ -1,10 +1,22 @@
 // Sidebar.js
 import React from 'react';
-import { Nav, NavDropdown } from 'react-bootstrap';
+import { Button, Nav, NavDropdown } from 'react-bootstrap';
 import { House, Person, BoxArrowRight, Puzzle } from 'react-bootstrap-icons';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { useAuth } from './auth/AuthProvider';
 
 const Sidebar = () => {
+  // const { isAuthenticated } = useAuth();
+  // const { logout } = useAuth();
+  // const handleOnClick = () => {
+
+  // }
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleOnClick = () => {
+    logout();             // Clear auth context/session
+    navigate("/login");   // Redirect to Login page
+  };
   return (
     <div
       style={{
@@ -17,57 +29,97 @@ const Sidebar = () => {
       }}
     >
       <Nav className="flex-column" variant="pills" defaultActiveKey="/home">
-        <Nav.Link as={NavLink} to="/home" style={linkStyle}>
-          <House className="me-2" /> Home
-        </Nav.Link>
-        <Nav.Link as={NavLink} to="/profile" style={linkStyle}>
-          <Person className="me-2" /> Profile
-        </Nav.Link>
+        {
+          isAuthenticated && (
+            <>
+              <Nav.Link as={NavLink} to="/home" style={linkStyle}>
+                <House className="me-2" /> Home
+              </Nav.Link>
+              <Nav.Link as={NavLink} to="/profile" style={linkStyle}>
+                <Person className="me-2" /> Profile
+              </Nav.Link>
+              <NavDropdown
+                title={
+                  <span style={linkStyle}>
+                    <Puzzle className="me-2" /> Components
+                  </span>
+                }
+                id="nav-dropdown-components"
+                style={{ paddingLeft: "0.5rem", marginLeft: "-25px" }} // Optional, match Nav.Link padding
+              >
+                <NavDropdown.Item as={NavLink} to="/items" >
+                  Items
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/requests" >
+                  Requests
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/users" >
+                  Users
+                </NavDropdown.Item>
+              </NavDropdown>
 
-        {/* Dropdown for Components */}
-        {/* <NavDropdown
-          title={
-            <span>
-              <Puzzle className="me-2" /> Components
-            </span>
-          }
-          id="nav-dropdown-components"
-          style={linkStyle}
-        >
-          <NavDropdown.Item as={Link} to="/components/items">
-            Items
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/components/requests">
-            Requests
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/components/users">
-            Users
-          </NavDropdown.Item>
-        </NavDropdown> */}
-        <NavDropdown
-          title={
-            <span style={linkStyle}>
-              <Puzzle className="me-2" /> Components
-            </span>
-          }
-          id="nav-dropdown-components"
-          style={{ paddingLeft: "0.5rem" ,marginLeft:"-25px"} } // Optional, match Nav.Link padding
-        >
-          <NavDropdown.Item as={NavLink} to="/items" >
-            Items
-          </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} to="/requests" >
-            Requests
-          </NavDropdown.Item>
-          <NavDropdown.Item as={NavLink} to="/users" >
-            Users
-          </NavDropdown.Item>
-        </NavDropdown>
 
-        <Nav.Link as={NavLink} to="/logout" style={linkStyle}>
-          <BoxArrowRight className="me-2" /> Logout
-        </Nav.Link>
+              <Button
+                variant="secondary"
+                style={{ marginLeft: "20px", marginTop: "10px" }}
+                className="d-flex align-items-center"
+                onClick={handleOnClick}
+              >
+                <BoxArrowRight className="me-2" />
+                Logout
+              </Button>
+
+            </>
+          )
+
+
+        }
       </Nav>
+      {/* <Nav className="flex-column" variant="pills" defaultActiveKey="/home">
+        {isAuthenticated && (
+          <>
+            <Nav.Link as={NavLink} to="/home" style={linkStyle}>
+              <House className="me-2" /> Home
+            </Nav.Link>
+
+            <Nav.Link as={NavLink} to="/profile" style={linkStyle}>
+              <Person className="me-2" /> Profile
+            </Nav.Link>
+
+            <NavDropdown
+              title={
+                <span style={linkStyle}>
+                  <Puzzle className="me-2" /> Components
+                </span>
+              }
+              id="nav-dropdown-components"
+              style={{ paddingLeft: "0.5rem", marginLeft: "-15px" }} // Adjust for alignment
+            >
+              <NavDropdown.Item as={NavLink} to="/items">
+                Items
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/requests">
+                Requests
+              </NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/users">
+                Users
+              </NavDropdown.Item>
+            </NavDropdown>
+
+            <div style={{ marginLeft: "1rem", marginTop: "1rem" }}>
+              <Button
+                variant="outline-danger"
+                className="d-flex align-items-center"
+                onClick={handleOnClick}
+              >
+                <BoxArrowRight className="me-2" />
+                Logout
+              </Button>
+            </div>
+          </>
+        )}
+      </Nav> */}
+
     </div>
   );
 };

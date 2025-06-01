@@ -27,13 +27,13 @@ const App: React.FC = () => {
 
             <div className="p-4">
               <Routes>
-                <Route path="/" element={<Navigate to="/items" />} />
+                <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/users" element={<UserConsole />} />
                 <Route path="/items" element={<ItemConsole />} />
                 <Route path="/requests" element={<RequestConsole />} />
-                <Route path="/*" element={<NotFound />} />
+                <Route path="/*" element={<NotFound />} />``
               </Routes>
             </div>
           </div>

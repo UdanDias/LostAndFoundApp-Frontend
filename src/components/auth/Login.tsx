@@ -2,6 +2,9 @@
 import { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { LoginTask } from "../service/auth/RegisterLogin";
+import { useAuth } from "./AuthProvider"
+import { useNavigate } from "react-router-dom";
+
 
 
 export const Login = () => {
@@ -9,6 +12,7 @@ export const Login = () => {
         email: string,
         password: string
     }
+    
     const [user, setUser] = useState<Login>({
         email: "",
         password: ""
@@ -16,18 +20,23 @@ export const Login = () => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUser({ ...user, [e.target.name]: e.target.value })
     }
+    const {login}=useAuth();
+    const navigate = useNavigate();
+
     const handleOnSubmit = async(e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
         const token=await LoginTask(user)
         console.log(token)
         alert(" user logged in  successfully")
         console.log(user);
+        login(token)
         setUser({
             
             email: "",
             password: "",
             
         })
+        navigate("/items");
     }
     return (
         <><div style={{ marginTop: "170px" }}>

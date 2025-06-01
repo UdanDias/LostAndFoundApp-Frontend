@@ -2,6 +2,7 @@ import { ReactElement, useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { RegisterTask } from "../service/auth/RegisterLogin"
 import { useAuth } from "./AuthProvider"
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
     interface Register {
@@ -12,7 +13,7 @@ export const Register = () => {
         password: string,
         role: 'ADMIN' | 'STAFF' | 'USER' | ''
     }
-    const {login}=useAuth();
+    
     const [user, setUser] = useState<Register>({
         firstName: "",
         lastName: "",
@@ -25,6 +26,8 @@ export const Register = () => {
         
         setUser ({ ...user, [e.target.name]: e.target.value })
     }
+    const {login}=useAuth();
+    const navigate=useNavigate();
     const handleOnSubmit = async(e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault()
         const token=await RegisterTask(user)
@@ -40,6 +43,7 @@ export const Register = () => {
             password: "",
             role: ""
         })
+        navigate("/items")
         
     }
     return (
