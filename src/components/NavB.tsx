@@ -22,13 +22,13 @@ function NavB() {
             <Nav.Item>
               <Button variant="outline-light" href="#login">
                 Login
-              </Button>
+              </B-+utton>
             </Nav.Item>
             
 
-          </Nav> */}
+          </Nav> */}-
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            <Nav.Link as={Link} to="/home">Home</Nav.Link>
             <Nav.Link as={Link} to="/register">Register</Nav.Link>
             <Nav.Item>
               <Link to="/login" className="btn btn-outline-light">

@@ -11,15 +11,20 @@ export const Register = () => {
         lastName: string,
         email: string,
         phoneNumber: string,
+        dateOfBirth:string,
+        gender:string,
+        accountCreatedDate:string,
         password: string,
         role: 'ADMIN' | 'STAFF' | 'USER' | ''
     }
 
-    const [user, setUser] = useState<Register>({
+    const [user, setUser] = useState<Omit<Register,'accountCreatedDate'>>({
         firstName: "",
         lastName: "",
         email: "",
         phoneNumber: "",
+        dateOfBirth:"",
+        gender:"",
         password: "",
         role: ""
     })
@@ -57,10 +62,12 @@ export const Register = () => {
             lastName: "",
             email: "",
             phoneNumber: "",
+            dateOfBirth:"",
+            gender:"",
             password: "",
             role: ""
         })
-        navigate("/items")
+        navigate("/home")
 
     }
     return (
@@ -98,6 +105,20 @@ export const Register = () => {
                         <Form.Label>Phone Number</Form.Label>
                         <Form.Control type="tel" placeholder="Enter Phone Number" name="phoneNumber" value={user.phoneNumber} onChange={handleOnChange} />
 
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Date Of Birth</Form.Label>
+                        <Form.Control type="date" placeholder="Enter Date Of Birth" name="dateOfBirth" value={user.dateOfBirth} onChange={handleOnChange} />
+
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formRole" >
+                        <Form.Label>Gender</Form.Label>
+                        <Form.Select defaultValue="" name="gender" value={user.gender} onChange={handleOnChange} >
+                            <option value="" disabled>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            
+                        </Form.Select>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">

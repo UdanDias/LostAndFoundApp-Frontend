@@ -16,6 +16,8 @@ import { Login } from './components/auth/Login';
 import { AuthProvider } from './components/auth/AuthProvider';
 import { UnAuth } from './components/UnAuth';
 import PrivateRoute from './components/PrivateRoute';
+import { Home } from './components/Home';
+import { Profile } from './components/Profile';
 
 const App: React.FC = () => {
   return (
@@ -31,8 +33,11 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/home" element={< Home/>} />
                 <Route path="/unauth" element={<UnAuth />} />
                 <Route path="/login" element={<Login />} />
+                
+                <Route path="/profile" element={<Profile />} />
                 {/* <Route path="/users" element={<UserConsole />} />
                 <Route path="/items" element={<ItemConsole />} />
                 <Route path="/requests" element={<RequestConsole />} /> */}

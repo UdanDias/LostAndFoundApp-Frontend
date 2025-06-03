@@ -6,13 +6,16 @@ import { updateUser } from './UpdateUser';
 import Swal from 'sweetalert2';
 
 interface User {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  password: string
-  role: 'ADMIN' | 'STAFF' | 'USER' | "";
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dateOfBirth:string,
+    gender:string,
+    accountCreatedDate:string,
+    phoneNumber: string;
+    password: string;
+    role: 'ADMIN' | 'STAFF' | 'USER' | "";
 }
 
 interface UserEditProps {
@@ -24,11 +27,14 @@ interface UserEditProps {
 }
 
 function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }: UserEditProps) {
-  const [userDetails, setUserDetails] = useState<Omit<User,'password'>>({
+  const [userDetails, setUserDetails] = useState<Omit<User,'password'|'accountCreatedDate'>>({
     userId: "",
     firstName: "",
     lastName: "",
     email: "",
+    dateOfBirth:"",
+    gender:"",
+    
     phoneNumber: "",
     
     role: ""
@@ -125,6 +131,33 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }
           </FloatingLabel>
           <FloatingLabel
             controlId="floatingInput"
+            label="Date Of Birth"
+            className="mb-3"
+          >
+            <Form.Control
+              type="date"
+              name="dateOfBirth"
+              value={userDetails.dateOfBirth}
+              onChange={handleOnChange} />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingSelect"
+            label="Gender"
+            className="mb-3"
+          >
+            <Form.Select
+              name="gender"
+              value={userDetails.gender}
+              onChange={handleOnChange}
+            >
+              <option value="" disabled>Select a gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              
+            </Form.Select>
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
             label="PhoneNumber"
             className="mb-3"
           >
@@ -177,5 +210,6 @@ function EditUser({ show, selectedRow, handleClose, handleUpdate, refreshTable }
     </Modal>
   );
 }
+
 
 export default EditUser;

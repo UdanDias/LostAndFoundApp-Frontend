@@ -98,7 +98,7 @@ export const Login = () => {
         console.log(user); // Optional: may not be needed for production
         login(token);
         setUser({ email: "", password: "" });
-        navigate("/items");
+        navigate("/home");
     };
 
     return (

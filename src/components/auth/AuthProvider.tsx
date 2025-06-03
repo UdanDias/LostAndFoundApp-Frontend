@@ -7,11 +7,11 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 //     logout: () => void;
 // }
 interface AuthContextType {
-  isAuthenticated: boolean;
-  role: string | null;
-  login: (token: string) => void;
-  logout: () => void;
-  authLoading: boolean; // NEW
+    isAuthenticated: boolean;
+    role: string | null;
+    login: (token: string) => void;
+    logout: () => void;
+    authLoading: boolean; // NEW
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,10 +39,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         const base64Payload = token.split(".")[1];
         const decodedPayload = JSON.parse(atob(base64Payload));
         const role = decodedPayload?.role || decodedPayload?.roles?.[0];
+        const userId = decodedPayload?.userId;
 
         if (role) {
             localStorage.setItem("LFRole", role);
             setRole(role);
+        }
+        if (userId) {
+            localStorage.setItem("LFUserId", userId);
         }
     };
 

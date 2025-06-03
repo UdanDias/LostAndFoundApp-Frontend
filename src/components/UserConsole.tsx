@@ -90,6 +90,9 @@ interface User {
     firstName: string;
     lastName: string;
     email: string;
+    dateOfBirth: string,
+    gender: string,
+    accountCreatedDate: string,
     phoneNumber: string;
     password: string;
     role: 'ADMIN' | 'STAFF' | 'USER' | "";
@@ -133,6 +136,9 @@ export function UserConsole() {
         "First Name",
         "Last Name",
         "Email",
+        "date Of Birth",
+        "Gender",
+        "Account Created date",
         "Phone Number",
         "Password",
         "Role",
@@ -166,40 +172,40 @@ export function UserConsole() {
             try {
                 await deleteUsers(userId)
                 const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.onmouseenter = Swal.stopTimer;
-                          toast.onmouseleave = Swal.resumeTimer;
-                        }
-                      });
-                
-                      Toast.fire({
-                        icon: "success",
-                        title: "User Deleted Successfully"
-                      });
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "User Deleted Successfully"
+                });
                 setUserData(userData.filter(user => user.userId !== userId))
 
             } catch (error) {
                 const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.onmouseenter = Swal.stopTimer;
-                          toast.onmouseleave = Swal.resumeTimer;
-                        }
-                      });
-                
-                      Toast.fire({
-                        icon: "error",
-                        title: "Failed to Delete User"
-                      });
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+
+                Toast.fire({
+                    icon: "error",
+                    title: "Failed to Delete User"
+                });
                 console.error("Delete user failed with", error)
 
             }
@@ -269,16 +275,36 @@ export function UserConsole() {
   </Button> */}
             </div>
 
-            <Table striped bordered hover style={{ marginTop: "20px" }}>
+            <Table
+                striped
+                bordered
+                hover
+                style={{
+                    marginTop: "20px",
+                    tableLayout: "fixed",
+                    width: "100%",
+                    wordWrap: "break-word"
+                }}
+            >
+
                 <thead>
                     <tr>
-                        {tHeads.map((headings) => (
-                            <th className="text-center">{headings}</th>
+                        {tHeads.map((heading, index) => (
+                            <th
+                                key={index}
+                                className="text-center"
+                                style={
+                                    heading === "Action"
+                                        ? { width: "160px", minWidth: "140px" }
+                                        : {}
+                                }
+                            >
+                                {heading}
+                            </th>
                         ))}
-
-
                     </tr>
                 </thead>
+
                 <tbody>
                     {userData.map((row) => (
                         <tr key={row.userId}>
