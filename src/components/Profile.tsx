@@ -4,6 +4,7 @@ import { getRequestsByUserId } from "./service/request/GetRequestByUser";
 import { Table } from "react-bootstrap";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import EditUser from "./service/user/EditUser"; // Make sure this import is added
+import { getRequestStatsByUserId } from "./service/request/GetRequestStats";
 
 interface User {
     userId: string;
@@ -37,7 +38,9 @@ export const Profile = () => {
     const [request, setrequest] = useState<Request | null>(null)
     const [requestData, setRequestData] = useState<Request[]>([])
     const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-    
+    const [requestStats, setRequestStats] = useState<{ [key: string]: number }>({});
+
+
     const handleOpenEditModal = () => setShowEditProfileModal(true);
     const handleCloseEditModal = () => setShowEditProfileModal(false);
 
@@ -46,7 +49,7 @@ export const Profile = () => {
         try {
             setUser(updatedUser); // Update local state first
             setShowEditProfileModal(false); // Close modal
-            
+
             // Optional: Re-fetch from server to ensure consistency
             if (userId) {
                 const freshUserData = await getUserbyId(userId);
@@ -92,6 +95,22 @@ export const Profile = () => {
         fetchData();
     }, [userId]);
 
+    useEffect(() => {
+        const fetchRequestStats = async () => {
+            if (userId) {
+                try {
+                    const stats = await getRequestStatsByUserId(userId);
+                    setRequestStats(stats);
+                } catch (error) {
+                    console.error("Error fetching request stats", error);
+                }
+            }
+        };
+
+        fetchRequestStats();
+    }, [userId]);
+
+
     const tHeads: { label: string; key: keyof Request }[] = [
         { label: "Request Id", key: "requestId" },
         { label: "Item Id", key: "itemId" },
@@ -112,46 +131,98 @@ export const Profile = () => {
             <Card className="mx-auto mt-4 shadow-sm" style={{ maxWidth: '600px' }}>
                 <Card.Body>
                     <Card.Title className="text-center mb-4">
-                        <h3>USER PROFILE</h3>
-                        <h5>Welcome, {user.firstName} {user.lastName}</h5>
+                        <h2 style={{
+                            fontWeight: "700",
+                            fontSize: "2rem",
+                            fontStyle: "",
+                            background: "linear-gradient(to right,rgb(64, 27, 165),rgb(96, 170, 209))",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            textShadow: "0px 4px 5px rgba(118, 212, 249, 0.4)",
+                        }}>USER PROFILE</h2>
+                        <h4>Welcome, <span style={{ fontWeight: "500",
+                        fontSize: "1.5rem",
+                        fontStyle: "",
+                        background: "linear-gradient(to right,rgb(249, 146, 118),rgb(209, 168, 96))",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        textShadow: "0px 4px 5px rgba(249, 170, 118, 0.4)", }}><strong>{user.firstName} {user.lastName}</strong></span></h4>
                     </Card.Title>
+                    <div className="px-4" style={{ marginLeft: "110px" }}>
+                        <Row>
+                            <Col sm={6}><strong>Name:</strong></Col>
+                            <Col sm={6}><strong>{user.firstName} {user.lastName}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Date Of Birth:</strong></Col>
+                            <Col sm={6}><strong>{user.dateOfBirth}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Gender:</strong></Col>
+                            <Col sm={6}><strong>{user.gender}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Account Created:</strong></Col>
+                            <Col sm={6}><strong>{user.accountCreatedDate}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Email:</strong></Col>
+                            <Col sm={6}><strong>{user.email}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Phone:</strong></Col>
+                            <Col sm={6}><strong>{user.phoneNumber}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}><strong>Role:</strong></Col>
+                            <Col sm={6}><strong>{user.role}</strong></Col>
+                        </Row>
+                    </div>
 
-                    <Row>
-                        <Col sm={6}><strong>Name:</strong></Col>
-                        <Col sm={6}>{user.firstName} {user.lastName}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Date Of Birth:</strong></Col>
-                        <Col sm={6}>{user.dateOfBirth}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Gender:</strong></Col>
-                        <Col sm={6}>{user.gender}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Account Created:</strong></Col>
-                        <Col sm={6}>{user.accountCreatedDate}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Email:</strong></Col>
-                        <Col sm={6}>{user.email}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Phone:</strong></Col>
-                        <Col sm={6}>{user.phoneNumber}</Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}><strong>Role:</strong></Col>
-                        <Col sm={6}>{user.role}</Col>
-                    </Row>
 
                     <div className="text-center mt-4">
                         <Button variant="outline-primary" onClick={handleOpenEditModal}>Edit Profile</Button>
                     </div>
                 </Card.Body>
             </Card>
+            <Card className="mx-auto mt-4 shadow-sm" style={{ maxWidth: '600px', marginBottom: "20px" }}>
+                <Card.Body>
+                    <Card.Title className="text-center mb-4"><h5 style={{
+                        fontWeight: "700",
+                        fontSize: "2rem",
+                        fontStyle: "",
+                        background: "linear-gradient(to right,rgb(64, 27, 165),rgb(96, 170, 209))",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        textShadow: "0px 4px 5px rgba(118, 212, 249, 0.4)",
+                    }}>Request Statistics</h5></Card.Title>
+                    <div className="px-4" style={{ marginLeft: "160px" }}>
+                        <Row>
+                            <Col><strong>Total Requests:</strong></Col>
+                            <Col><strong>{requestStats.totalRequests ?? 0}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col><strong>Active Requests:</strong></Col>
+                            <Col><strong>{requestStats.activeRequests ?? 0}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col><strong>Pending Requests:</strong></Col>
+                            <Col><strong>{requestStats.pendingRequests ?? 0}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col><strong>Approved Requests:</strong></Col>
+                            <Col><strong>{requestStats.approvedRequests ?? 0}</strong></Col>
+                        </Row>
+                        <Row>
+                            <Col><strong>Rejected Requests:</strong></Col>
+                            <Col><strong>{requestStats.rejectedRequests ?? 0}</strong></Col>
+                        </Row>
+                    </div>
 
-            <div>
+                </Card.Body>
+            </Card>
+
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -179,6 +250,9 @@ export const Profile = () => {
                 </Table>
             </div>
 
+
+
+
             {/* Move EditUser component here, inside the return statement */}
             {user && (
                 <EditUser
@@ -186,7 +260,7 @@ export const Profile = () => {
                     selectedRow={user}
                     handleClose={handleCloseEditModal}
                     handleUpdate={handleProfileUpdate}
-                    refreshTable={() => {}} 
+                    refreshTable={() => { }}
                 />
             )}
         </>

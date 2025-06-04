@@ -8,12 +8,15 @@ function NavB() {
   return (
     <>
       <Navbar
+        fixed="top"
         style={{
+
           background: 'linear-gradient(135deg, #2b1055, #1a1a40, #0f0c29)',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.6)'
         }}
         variant="dark"
       >
+
         <Container>
 
           {/* <Nav className="me-auto">
@@ -38,6 +41,9 @@ function NavB() {
           </Nav>
         </Container>
       </Navbar>
+      <div style={{ paddingTop: "40px" }}>
+        
+      </div>
 
     </>
   );

@@ -72,6 +72,7 @@ export const Register = () => {
     }
     return (
         <>
+        
             <h1
                 className="text-center fw-bold mb-4"
                 style={{ fontSize: "40px", letterSpacing: "1px", textShadow: "1px 1px 2px rgba(0,0,0,0.1)", color: "#444" }}

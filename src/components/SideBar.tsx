@@ -47,11 +47,12 @@ const Sidebar = () => {
     <div
       style={{
         height: '100vh',
-        width: '220px',
+        width: '230px',
         backgroundColor: '#343a40',
         color: 'white',
         paddingTop: '20px',
-        position: 'fixed'
+        position: 'fixed',
+        marginTop:'50px'
       }}
     >
       <Nav className="flex-column" variant="pills" defaultActiveKey="/home">

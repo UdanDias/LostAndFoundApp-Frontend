@@ -167,15 +167,18 @@ export function RequestConsole() {
                 >
                     <span
                         style={{
-                            color: "#7c60d1", // Lightened version of #2b1055
                             fontWeight: "700",
                             fontSize: "2.8rem",
-                            textShadow: "1px 1px 3px rgba(124, 96, 209, 0.5)",
+                            fontStyle: "",
+                            background: "linear-gradient(to right,rgb(64, 27, 165),rgb(96, 170, 209))",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            textShadow: "0px 4px 5px rgba(118, 212, 249, 0.4)",
                         }}
                     >
-                        Request
+                        Request Console
                     </span>
-                    &nbsp;
+                    {/* &nbsp;
                     <span
                         style={{
                             color: "#7e6df0", // Lightened version of #0f0c29
@@ -185,7 +188,7 @@ export function RequestConsole() {
                         }}
                     >
                         Console
-                    </span>
+                    </span> */}
                 </h1>
 
                 {/* Button aligned right */}
